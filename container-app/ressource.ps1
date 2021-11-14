@@ -8,8 +8,8 @@
 #az provider register --namespace Microsoft.Web
 
 $scriptPath = $PSScriptRoot
-#& "$scriptPath/variables.ps1"
-& "$scriptPath/variables.dev.ps1"
+#. "$scriptPath/variables.ps1"
+. "$scriptPath/variables.dev.ps1"
 
 az account set --subscription $subscriptionId
 
@@ -35,7 +35,7 @@ az containerapp env create `
     --location "$LOCATION"
 
 # create pool in azdo
-$AZP_POOLID = (& "$scriptPah/azDOResources.ps1" -OrgName $OrgName -PAT $AZP_TOKEN -PoolName $AZP_POOL).id
+$AZP_POOLID = (& "$scriptPath/azDOResources.ps1" -OrgName $OrgName -PAT $AZP_TOKEN -PoolName $AZP_POOL).id
 
 # container app
 az deployment group create `
