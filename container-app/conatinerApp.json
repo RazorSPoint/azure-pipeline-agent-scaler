@@ -35,88 +35,103 @@
         }
     },
     "variables": {},
-    "resources": [{
-        "name": "azdo-agent-scaled",
-        "type": "Microsoft.Web/containerApps",
-        "apiVersion": "2021-03-01",
-        "kind": "containerapp",
-        "location": "[parameters('location')]",
-        "properties": {
-            "kubeEnvironmentId": "[resourceId('Microsoft.Web/kubeEnvironments', parameters('environment_name'))]",
-            "configuration": {
-                "secrets": [{
-                        "name": "azp-url",
-                        "value": "[parameters('azp_url')]"
-                    },
-                    {
-                        "name": "azp-token",
-                        "value": "[parameters('azp_token')]"
-                    },
-                    {
-                        "name": "azp-pool",
-                        "value": "[parameters('azp_pool')]"
-                    },
-                    {
-                        "name": "azp-poolid",
-                        "value": "[parameters('azp_poolId')]"
-                    },
-                    {
-                        "name": "registry-secret",
-                        "value": "[parameters('registrySecret')]"
-                    }
-                ],
-                "registries": [{
-                    "server": "[parameters('registryEndpoint')]",
-                    "username": "[parameters('registryUserName')]",
-                    "passwordSecretRef": "registry-secret"
-                }]
-            },
-            "template": {
-                "containers": [{
-                    "image": "[parameters('registryImage')]",
-                    "name": "basedockeragent",
-                    "resources": {
-                        "cpu": 0.75,
-                        "memory": "1.5Gi"
-                    },
-                    "env": [{
-                            "name": "AZP_URL",
-                            "secretRef": "azp-url"
+    "resources": [
+        {
+            "name": "azdo-agent-scaled",
+            "type": "Microsoft.Web/containerApps",
+            "apiVersion": "2021-03-01",
+            "kind": "containerapp",
+            "location": "[parameters('location')]",
+            "properties": {
+                "kubeEnvironmentId": "[resourceId('Microsoft.Web/kubeEnvironments', parameters('environment_name'))]",
+                "configuration": {
+                    "secrets": [
+                        {
+                            "name": "azp-url",
+                            "value": "[parameters('azp_url')]"
                         },
                         {
-                            "name": "AZP_TOKEN",
-                            "secretRef": "azp-token"
+                            "name": "azp-token",
+                            "value": "[parameters('azp_token')]"
                         },
                         {
-                            "name": "AZP_POOL",
-                            "secretRef": "azp-pool"
+                            "name": "azp-pool",
+                            "value": "[parameters('azp_pool')]"
                         },
                         {
-                            "name": "AZP_POOLID",
-                            "secretRef": "azp-poolid"
+                            "name": "azp-poolid",
+                            "value": "[parameters('azp_poolId')]"
+                        },
+                        {
+                            "name": "registry-secret",
+                            "value": "[parameters('registrySecret')]"
+                        }
+                    ],
+                    "registries": [
+                        {
+                            "server": "[parameters('registryEndpoint')]",
+                            "username": "[parameters('registryUserName')]",
+                            "passwordSecretRef": "registry-secret"
                         }
                     ]
-                }],
-                "scale": {
-                    "minReplicas": "1",
-                    "maxReplicas": "5",
-                    "rules": [{
-                        "name": "azdo-agent-scaled",
-                        "custom": {
-                            "type": "azure-pipelines",
-                            "metadata": {
-                                "poolID": "[parameters('azp_poolId')]",
-                                "organizationURLFromEnv ": "[parameters('azp_url')]",
-                                "targetPipelinesQueueLength": "1"
+                },
+                "template": {
+                    "containers": [
+                        {
+                            "image": "[parameters('registryImage')]",
+                            "name": "basedockeragent",
+                            "resources": {
+                                "cpu": 0.75,
+                                "memory": "1.5Gi"
                             },
-                            "auth": [{
-                                "secretRef": "azp-token",
-                                "triggerParameter": "personalAccessToken"
-                            }]
+                            "env": [
+                                {
+                                    "name": "AZP_URL",
+                                    "secretRef": "azp-url"
+                                },
+                                {
+                                    "name": "AZP_TOKEN",
+                                    "secretRef": "azp-token"
+                                },
+                                {
+                                    "name": "AZP_POOL",
+                                    "secretRef": "azp-pool"
+                                },
+                                {
+                                    "name": "AZP_POOLID",
+                                    "secretRef": "azp-poolid"
+                                }
+                            ]
                         }
-                    }]
+                    ],
+                    "scale": {
+                        "minReplicas": "1",
+                        "maxReplicas": "5",
+                        "rules": [
+                            {
+                                "name": "azdo-agent-scaled",
+                                "custom": {
+                                    "type": "azure-pipelines",
+                                    "metadata": {
+                                        "poolID": "[parameters('azp_poolId')]",
+                                        "targetPipelinesQueueLength": "1"
+                                    },
+                                    "auth": [
+                                        {
+                                            "secretRef": "azp-token",
+                                            "triggerParameter": "personalAccessToken"
+                                        },
+                                        {
+                                            "secretRef": "azp-url",
+                                            "triggerParameter": "organizationURL"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         }
-    }]
+    ]
 }
