@@ -1,3 +1,6 @@
+# Note: This is not working yet. Check Github issue with Container Apps
+https://github.com/microsoft/azure-container-apps/issues/31
+
 # Getting Started
 
 1. Make sure you have an ACR ready with an admin user activated.
