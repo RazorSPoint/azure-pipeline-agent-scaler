@@ -11,7 +11,10 @@ param (
     $PoolName
 )
 
-if ((Get-Module -ListAvailable -Name VSTeam) -eq $null) {
+# using VSTeam module for creating resources on Azure DevOps
+# https://github.com/MethodsAndPractices/vsteam
+
+if ($null -eq (Get-Module -ListAvailable -Name VSTeam)) {
     $null = Install-Module VSTeam -Force -Scope CurrentUser -AllowClobber
 }
 

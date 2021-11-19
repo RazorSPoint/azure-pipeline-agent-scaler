@@ -8,11 +8,30 @@
 #az provider register --namespace Microsoft.Web
 
 $scriptPath = $PSScriptRoot
-#. "$scriptPath/variables.ps1"
-. "$scriptPath/variables.dev.ps1"
 
-az account set --subscription $subscriptionId
+$SUBSCRIPTION_ID = "1a96bd6b-d0ef-4083-9ebb-3d7feae16116"
+$RESOURCE_GROUP = "RG-POC_ContainerApps-AzDOAgent"
+$LOCATION = "northeurope"
+$CONTAINERAPPS_ENVIRONMENT = "containerapps-env"
+$LOG_ANALYTICS_WORKSPACE = "containerapps-logs"
+$ORG_NAME = "<your org name>"
+$AZP_TOKEN = "<PAT>" #for poc reasons use a full scoped PAT, then can use the same PAT for all the resources
+$AZP_POOL = "Container-App-POC"
+$AZP_URL = "https://dev.azure.com/$OrgName"
 
+#registry is expected to already exist
+$REGISTRY_ENDPOINT = "https://<acr name>.azurecr.io"
+$REGISTRY_ADMIN= "<admin>"
+$REGISTRY_SECRET="<admin password>"
+
+# uncomment this if you want to override vars with local vars for development
+# you need to add a file 'variables.dev.ps1' to the folder 'container-app'
+#. "$scriptPath/variables.dev.ps1"
+
+# select subscription
+az account set --subscription $SUBSCRIPTION_ID
+
+# create resource group
 az group create `
     --name $RESOURCE_GROUP `
     --location "$LOCATION"
@@ -35,7 +54,7 @@ az containerapp env create `
     --location "$LOCATION"
 
 # create pool in azdo
-$AZP_POOLID = (& "$scriptPath/azDOResources.ps1" -OrgName $OrgName -PAT $AZP_TOKEN -PoolName $AZP_POOL).id
+$AZP_POOLID = (& "$scriptPath/AzDO-Pool.ps1" -OrgName $ORG_NAME -PAT $AZP_TOKEN -PoolName $AZP_POOL).id
 
 # container app
 az deployment group create `
@@ -48,14 +67,7 @@ az deployment group create `
     azp_token="$AZP_TOKEN" `
     azp_pool="$AZP_POOL" `
     azp_poolId="$AZP_POOLID" `
-    registryEndpoint=$registryEndpoint `
-    registryUserName=$registryUserName `
-    registrySecret=$registrySecret `
-    registryImage="$registryEndpoint/basedockeragent:latest"
-
-
-# get container logs
-az monitor log-analytics query `
-    --workspace $LOG_ANALYTICS_WORKSPACE_CLIENT_ID `
-    --analytics-query "ContainerAppConsoleLogs_CL | where ContainerAppName_s == 'my-container-app' | project ContainerAppName_s, Log_s, TimeGenerated | take 3" `
-    --out table
+    registryEndpoint=$REGISTRY_ENDPOINT `
+    registryUserName=$REGISTRY_ADMIN `
+    registrySecret=$REGISTRY_SECRET `
+    registryImage="$REGISTRY_ENDPOINT/basedockeragent:latest"
