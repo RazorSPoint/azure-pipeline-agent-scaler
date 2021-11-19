@@ -10,10 +10,10 @@
             "type": "String"
         },
         "azp_url": {
-            "type": "String"
+            "type": "securestring"
         },
         "azp_token": {
-            "type": "String"
+            "type": "securestring"
         },
         "azp_pool": {
             "type": "String"
@@ -28,7 +28,7 @@
             "type": "String"
         },
         "registrySecret": {
-            "type": "String"
+            "type": "securestring"
         },
         "registryImage": {
             "type": "String"
