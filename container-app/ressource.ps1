@@ -17,7 +17,7 @@ $LOG_ANALYTICS_WORKSPACE = "containerapps-logs"
 $ORG_NAME = "<your org name>"
 $AZP_TOKEN = "<PAT>" #for poc reasons use a full scoped PAT, then can use the same PAT for all the resources
 $AZP_POOL = "Container-App-POC"
-$AZP_URL = "https://dev.azure.com/$OrgName"
+$AZP_URL = "https://dev.azure.com/$ORG_NAME"
 
 #registry is expected to already exist
 $REGISTRY_ENDPOINT = "https://<acr name>.azurecr.io"
@@ -26,7 +26,7 @@ $REGISTRY_SECRET="<admin password>"
 
 # uncomment this if you want to override vars with local vars for development
 # you need to add a file 'variables.dev.ps1' to the folder 'container-app'
-#. "$scriptPath/variables.dev.ps1"
+. "$scriptPath/variables.dev.ps1"
 
 # select subscription
 az account set --subscription $SUBSCRIPTION_ID
