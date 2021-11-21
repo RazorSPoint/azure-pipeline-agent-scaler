@@ -39,7 +39,7 @@ But here are some more links to get you started with the used technologies:
 * [KEDA](https://keda.sh/#:~:text=KEDA%20is%20a%20Kubernetes%2Dbased,added%20into%20any%20Kubernetes%20cluster.)
 * [Kubernetes](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/)
 
-## But wait! Isn't this idea specific to Azure DevOps
+## But wait! Isn't this idea not just specific to Azure DevOps
 
 Basically yes! Because Container Apps don't care what you run.
 So you could take the principle to GitHub, GitLab and Jenkins. The thing you need is a scaler available in KEDA and an API on these System where you could check the queue of waiting jobs. Then you just go to [KEDA's github repo](https://github.com/kedacore/keda) and make a PR.
