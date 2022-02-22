@@ -2,6 +2,14 @@
 
 **[Read also my blog](https://www.razorspoint.com/2021/11/19/scalable-container-based-azure-pipelines-pools-with-azure-container-apps/) post for more details.**
 
+**Update 22.02.2022**
+There is a thread about this approach regarding Container Apps only supporting ScaledObjects and not ScaledJobs. Which is needed to not cancel agent jobs when container apps are scaled down. So for now scaling is not really usable for ACI (Azure Container Apps).
+
+See below tweet:
+https://twitter.com/jorgearteiro/status/1494324269371002882?s=21
+
+It has been [removed from the current public documentation](https://github.com/microsoft/azure-container-apps/issues/115) as well but there is [a feature request to support scaled jobs in the future](https://github.com/microsoft/azure-container-apps/issues/24). So use this as a basic concept and stay tuned until scaled jobs really work with Azure Pipelines.
+
 ## Prerequisites
 
 For this example here the following tools are needed:
