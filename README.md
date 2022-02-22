@@ -2,7 +2,7 @@
 
 **[Read also my blog](https://www.razorspoint.com/2021/11/19/scalable-container-based-azure-pipelines-pools-with-azure-container-apps/) post for more details.**
 
-**Update 22.02.2022**
+**Update 22.02.2022**  
 There is a thread about this approach regarding Container Apps only supporting ScaledObjects and not ScaledJobs. Which is needed to not cancel agent jobs when container apps are scaled down. So for now scaling is not really usable for ACI (Azure Container Apps).
 
 See below tweet:
